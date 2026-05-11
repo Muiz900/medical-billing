@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --radius: 0.75rem;
+  --background: 0.99 0.005 180;
+  --foreground: 0.18 0.02 200;
+  --card: 1 0 0;
+  --card-foreground: 0.18 0.02 200;
+  --popover: 1 0 0;
+  --popover-foreground: 0.18 0.02 200;
+  --primary: 0.55 0.13 175;
+  --primary-foreground: 0.99 0.005 180;
+  --secondary: 0.96 0.02 175;
+  --secondary-foreground: 0.25 0.05 190;
+  --muted: 0.96 0.01 200;
+  --muted-foreground: 0.5 0.02 200;
+  --accent: 0.7 0.18 150;
+  --accent-foreground: 0.99 0.005 180;
+  --destructive: 0.577 0.245 27.325;
+  --destructive-foreground: 0.984 0.003 247.858;
+  --border: 0.929 0.013 255.508;
+  --input: 0.929 0.013 255.508;
+  --ring: 0.704 0.04 256.788;
+  --sidebar: 0.984 0.003 247.858;
+  --sidebar-foreground: 0.129 0.042 264.695;
+  --sidebar-primary: 0.208 0.042 265.755;
+  --sidebar-primary-foreground: 0.984 0.003 247.858;
+  --sidebar-accent: 0.968 0.007 247.896;
+  --sidebar-accent-foreground: 0.208 0.042 265.755;
+  --sidebar-border: 0.929 0.013 255.508;
+  --sidebar-ring: 0.704 0.04 256.788;
+}
+
+.dark {
+  --background: 0.129 0.042 264.695;
+  --foreground: 0.984 0.003 247.858;
+  --card: 0.208 0.042 265.755;
+  --card-foreground: 0.984 0.003 247.858;
+  --popover: 0.208 0.042 265.755;
+  --popover-foreground: 0.984 0.003 247.858;
+  --primary: 0.929 0.013 255.508;
+  --primary-foreground: 0.208 0.042 265.755;
+  --secondary: 0.279 0.041 260.031;
+  --secondary-foreground: 0.984 0.003 247.858;
+  --muted: 0.279 0.041 260.031;
+  --muted-foreground: 0.704 0.04 256.788;
+  --accent: 0.279 0.041 260.031;
+  --accent-foreground: 0.984 0.003 247.858;
+  --destructive: 0.704 0.191 22.216;
+  --destructive-foreground: 0.984 0.003 247.858;
+  --border: 1 0 0;
+  --input: 1 0 0;
+  --ring: 0.551 0.027 264.364;
+  --sidebar: 0.208 0.042 265.755;
+  --sidebar-foreground: 0.984 0.003 247.858;
+  --sidebar-primary: 0.488 0.243 264.376;
+  --sidebar-primary-foreground: 0.984 0.003 247.858;
+  --sidebar-accent: 0.279 0.041 260.031;
+  --sidebar-accent-foreground: 0.984 0.003 247.858;
+  --sidebar-border: 1 0 0;
+  --sidebar-ring: 0.551 0.027 264.364;
+}
+
+@layer base {
+  * {
+    border-color: oklch(var(--border) / 1);
+  }
+
+  body {
+    background-color: oklch(var(--background) / 1);
+    color: oklch(var(--foreground) / 1);
+    font-family: "Nunito", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
