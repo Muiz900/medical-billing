@@ -122,12 +122,8 @@ const testimonials = [
     text: "An all encompassing service from start up to everything needed to make a medical practice successful. The team is absolutely wonderful. Peace of mind and customer service at its best.",
   },
   {
-    name: "HappyKids Pediatrics",
-    text: "Always received the best support and services. Professionalism, a wealth of experience, dedication, honesty, and going the extra mile to help the practice succeed.",
-  },
-  {
     name: "Christopher Price Cunningham",
-    text: "Rizwan and his team are extremely hard working. Dedicated to IT support always working to ensure customer satisfaction.",
+    text: "Shawn and his team are extremely hard working. Dedicated to IT support always working to ensure customer satisfaction.",
   },
 ];
 
