@@ -4,9 +4,9 @@ import { fileURLToPath, URL } from "node:url";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 
-const DEFAULT_COMPANY_NAME = "Midsouth Healthcare Management";
+const DEFAULT_COMPANY_NAME = "CoverRCM";
 const DEFAULT_SITE_DESCRIPTION =
-  "Healthcare management consulting for physician practices, including practice management, revenue cycle, credentialing, IT, and back-office support.";
+  "Revenue cycle management and healthcare consulting services.";
 
 function normalizeBasePath(value) {
   if (!value || value === "/") {

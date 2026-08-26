@@ -848,12 +848,16 @@ function PlaceholderState({ slug }) {
               <div className="mt-10 grid gap-4 border-t border-border pt-8 md:grid-cols-3">
                 <div className="rounded-2xl bg-muted/40 px-4 py-4">
                   <Phone className="h-5 w-5 text-primary" />
-                  <p className="mt-3 text-sm font-semibold text-foreground">{PLACEHOLDER_PHONE}</p>
+                  <p className="mt-3 text-sm font-semibold text-foreground">
+                    <a href={PLACEHOLDER_PHONE_LINK} className="hover:text-primary hover:underline">{PLACEHOLDER_PHONE}</a>
+                  </p>
                   <p className="mt-1 text-sm text-muted-foreground">For direct conversations about active needs.</p>
                 </div>
                 <div className="rounded-2xl bg-muted/40 px-4 py-4">
                   <Mail className="h-5 w-5 text-primary" />
-                  <p className="mt-3 text-sm font-semibold text-foreground">{PLACEHOLDER_EMAIL}</p>
+                  <p className="mt-3 text-sm font-semibold text-foreground">
+                    <a href={PLACEHOLDER_EMAIL_LINK} className="hover:text-primary hover:underline">{PLACEHOLDER_EMAIL}</a>
+                  </p>
                   <p className="mt-1 text-sm text-muted-foreground">Best for sharing background before a call.</p>
                 </div>
                 <div className="rounded-2xl bg-muted/40 px-4 py-4">

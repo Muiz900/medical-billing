@@ -1,0 +1,17 @@
+{
+  "name": "Cover RCM",
+  "short_name": "Cover RCM",
+  "description": "Healthcare revenue cycle management, billing support, credentialing, and operational guidance for practices that want cleaner cash flow and stronger performance.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#f7fbfa",
+  "theme_color": "#0f7a6c",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -3,7 +3,9 @@ import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer
 import { ChevronDown, Menu, Phone, X } from "lucide-react";
 import { useScrollDirection } from "@/components/motion";
 import { Link } from "@/lib/router";
-import { COMPANY_INITIAL, COMPANY_NAME, CONTACT_PHONE_LINK } from "@/lib/siteConfig";
+import { COMPANY_NAME, CONTACT_PHONE_LINK } from "@/lib/siteConfig";
+
+import logoImg from "@/assets/logo.png";
 
 const nav = [
   { label: "Home", to: "/" },
@@ -74,16 +76,13 @@ function SiteHeader() {
             to="/"
             className="flex items-center gap-2 font-bold text-primary transition-transform duration-300 hover:scale-[1.02]"
           >
-            <motion.span
-              className="grid h-9 w-9 place-items-center rounded-full bg-primary text-primary-foreground"
-              whileHover={shouldReduceMotion ? {} : { rotate: -8, scale: 1.06 }}
+            <motion.div
+              className="rounded-2xl bg-white px-3 py-2 shadow-md"
+              whileHover={shouldReduceMotion ? {} : { scale: 1.04 }}
               transition={{ duration: 0.28, ease: "easeOut" }}
             >
-              {COMPANY_INITIAL}
-            </motion.span>
-            <span className="hidden max-w-[13rem] text-sm leading-tight sm:inline">
-              {COMPANY_NAME}
-            </span>
+              <img src={logoImg} alt={COMPANY_NAME} className="h-10 w-auto" />
+            </motion.div>
           </Link>
 
           <nav className="hidden items-center gap-1 lg:flex">

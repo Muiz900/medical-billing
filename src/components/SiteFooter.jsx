@@ -1,5 +1,6 @@
 import { Phone, Mail, MapPin } from "lucide-react";
 import { Link } from "@/lib/router";
+import logoImg from "@/assets/logo.png";
 import {
   COMPANY_NAME,
   CONTACT_ADDRESS,
@@ -16,7 +17,9 @@ function SiteFooter() {
   return <footer className="bg-foreground text-background mt-20">
       <div className="mx-auto max-w-7xl px-4 py-14 grid gap-10 md:grid-cols-4">
         <div>
-          <div className="font-bold text-lg">{COMPANY_NAME}</div>
+          <div className="inline-block rounded-2xl bg-white px-3 py-2 shadow-md">
+            <img src={logoImg} alt={COMPANY_NAME} className="h-10 w-auto" />
+          </div>
           <p className="mt-3 text-sm opacity-80">
             Helping practices grow with practice management, RCM, IT, virtual care, and back-office support.
           </p>

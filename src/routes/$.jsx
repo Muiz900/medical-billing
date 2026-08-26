@@ -4,8 +4,8 @@ const Route = createFileRoute("/$")({
   head: ({ params }) => {
     const slug = params._splat ?? "";
     const page = getPage(slug);
-    const title = page?.title ?? "Midsouth Healthcare Management";
-    const desc = page?.desc ?? "Healthcare practice management consulting.";
+    const title = page?.title ?? "CoverRCM";
+    const desc = page?.desc ?? "Revenue cycle management and healthcare consulting services.";
     return {
       meta: [
         { title },

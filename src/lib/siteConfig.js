@@ -1,9 +1,9 @@
-const DEFAULT_COMPANY_NAME = "Midsouth Healthcare Management";
-const DEFAULT_CONTACT_EMAIL = "info@mhmconsultants.net";
-const DEFAULT_CONTACT_PHONE = "+1 (901) 756-5565";
-const DEFAULT_CONTACT_ADDRESS = "Memphis, TN";
+const DEFAULT_COMPANY_NAME = "CoverRCM";
+const DEFAULT_CONTACT_EMAIL = "info@coverrcm.com";
+const DEFAULT_CONTACT_PHONE = "+1-720-807-2013";
+const DEFAULT_CONTACT_ADDRESS = "2512 Briarcliff Dr Irving, TX 75062, United States";
 const DEFAULT_SITE_DESCRIPTION =
-  "Healthcare management consulting for physician practices, including practice management, revenue cycle, credentialing, IT, and back-office support.";
+  "Revenue cycle management and healthcare consulting services.";
 
 export const COMPANY_NAME = import.meta.env.VITE_COMPANY_NAME || DEFAULT_COMPANY_NAME;
 export const CONTACT_NAME = import.meta.env.VITE_CONTACT_NAME || COMPANY_NAME;

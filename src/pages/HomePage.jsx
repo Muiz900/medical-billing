@@ -4,6 +4,7 @@ import {
   ArrowRight,
   Building2,
   Check,
+  Mail,
   Network,
   Phone,
   Plus,
@@ -30,12 +31,15 @@ import {
 } from "@/components/motion";
 import { Link } from "@/lib/router";
 import {
-  COMPANY_INITIAL,
   COMPANY_NAME,
+  CONTACT_EMAIL,
+  CONTACT_EMAIL_LINK,
   CONTACT_PHONE,
   CONTACT_PHONE_LINK,
   replaceSiteDetails,
 } from "@/lib/siteConfig";
+import logoImg from "@/assets/logo.png";
+import { sendContactForm } from "@/lib/emailService";
 
 const services = [
   {
@@ -134,7 +138,7 @@ const faqs = [
   },
   {
     q: "How long have you been in business?",
-    a: "We've been serving the healthcare sector for more than 35 years.",
+    a: "Our team brings 15+ years of combined experience serving the healthcare sector.",
   },
   {
     q: "Why is credentialing important for healthcare providers?",
@@ -152,16 +156,10 @@ const faqs = [
 
 function Logo() {
   return (
-    <div className="flex items-center gap-2 text-primary-foreground">
-      <div className="grid grid-cols-2 grid-rows-2 gap-0.5">
-        <div className="grid h-3 w-3 place-items-center border-2 border-current text-[8px] font-bold leading-none">
-          {COMPANY_INITIAL}
-        </div>
-        <div className="h-3 w-3 bg-current" />
-        <div className="h-3 w-3 bg-current" />
-        <div className="h-3 w-3 border-2 border-current" />
+    <div className="flex items-center">
+      <div className="rounded-2xl bg-white px-3 py-2 shadow-md">
+        <img src={logoImg} alt={COMPANY_NAME} className="h-10 w-auto" />
       </div>
-      <div className="max-w-[10rem] text-xs font-bold leading-tight tracking-wider">{COMPANY_NAME}</div>
     </div>
   );
 }
@@ -631,6 +629,30 @@ function Testimonials() {
 
 function ContactForm() {
   const shouldReduceMotion = useReducedMotion();
+  const [formData, setFormData] = useState({
+    name: "",
+    clinicName: "",
+    phone: "",
+    email: "",
+    message: "",
+    practiceType: "Existing Practice",
+  });
+  const [status, setStatus] = useState("idle");
+
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      await sendContactForm(formData);
+      setStatus("success");
+      setFormData({ name: "", clinicName: "", phone: "", email: "", message: "", practiceType: "Existing Practice" });
+    } catch (error) {
+      console.error(error);
+      setStatus("error");
+    }
+  };
 
   return (
     <section className="bg-primary px-6 py-20 text-primary-foreground md:px-16">
@@ -647,34 +669,97 @@ function ContactForm() {
                 animate={shouldReduceMotion ? {} : { x: [0, 5, 0] }}
                 transition={{ ...floatTransition, duration: 4.2 }}
               >
-                <Phone className="h-4 w-4" />
-                {CONTACT_PHONE}
+                <Phone className="h-4 w-4 shrink-0" />
+                <a href={CONTACT_PHONE_LINK} className="hover:underline">{CONTACT_PHONE}</a>
+              </motion.p>
+              <motion.p
+                className="flex items-center gap-3"
+                animate={shouldReduceMotion ? {} : { x: [0, 5, 0] }}
+                transition={{ ...floatTransition, duration: 4.8 }}
+              >
+                <Mail className="h-4 w-4 shrink-0" />
+                <a href={CONTACT_EMAIL_LINK} className="hover:underline">{CONTACT_EMAIL}</a>
               </motion.p>
             </div>
           </div>
         </Reveal>
         <Reveal direction="right">
           <motion.form
+            onSubmit={handleSubmit}
             className="rounded-3xl bg-card p-8 text-foreground shadow-2xl"
             whileHover={shouldReduceMotion ? {} : { y: -6 }}
             transition={{ duration: 0.28, ease: premiumEase }}
           >
             <h3 className="text-2xl font-bold">Get In Touch</h3>
+            {status === "success" && (
+              <div className="mt-4 rounded-lg bg-green-50 p-4 text-sm text-green-800">
+                Thanks! We've received your message and will be in touch shortly.
+              </div>
+            )}
+            {status === "error" && (
+              <div className="mt-4 rounded-lg bg-red-50 p-4 text-sm text-red-800">
+                Oops, something went wrong. Please try again or call us directly.
+              </div>
+            )}
             <div className="mt-6 grid gap-4">
-              {["Name", "Clinic Name", "Phone", "Email"].map((placeholder, index) => (
-                <motion.input
-                  key={placeholder}
-                  placeholder={placeholder}
-                  className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-primary"
-                  initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={sectionViewport}
-                  transition={{ duration: 0.28, delay: index * 0.05 }}
-                  whileFocus={shouldReduceMotion ? {} : { scale: 1.01 }}
-                />
-              ))}
+              <motion.input
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Name"
+                required
+                className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-primary"
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={sectionViewport}
+                transition={{ duration: 0.28, delay: 0 * 0.05 }}
+                whileFocus={shouldReduceMotion ? {} : { scale: 1.01 }}
+              />
+              <motion.input
+                name="clinicName"
+                value={formData.clinicName}
+                onChange={handleChange}
+                placeholder="Clinic Name"
+                className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-primary"
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={sectionViewport}
+                transition={{ duration: 0.28, delay: 1 * 0.05 }}
+                whileFocus={shouldReduceMotion ? {} : { scale: 1.01 }}
+              />
+              <motion.input
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Phone"
+                required
+                className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-primary"
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={sectionViewport}
+                transition={{ duration: 0.28, delay: 2 * 0.05 }}
+                whileFocus={shouldReduceMotion ? {} : { scale: 1.01 }}
+              />
+              <motion.input
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Email"
+                required
+                className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-primary"
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={sectionViewport}
+                transition={{ duration: 0.28, delay: 3 * 0.05 }}
+                whileFocus={shouldReduceMotion ? {} : { scale: 1.01 }}
+              />
               <motion.textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
                 placeholder="Message"
+                required
                 rows={4}
                 className="w-full resize-none rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-primary"
                 initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
@@ -684,6 +769,9 @@ function ContactForm() {
                 whileFocus={shouldReduceMotion ? {} : { scale: 1.01 }}
               />
               <motion.select
+                name="practiceType"
+                value={formData.practiceType}
+                onChange={handleChange}
                 className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-primary"
                 initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -691,16 +779,17 @@ function ContactForm() {
                 transition={{ duration: 0.28, delay: 0.27 }}
                 whileFocus={shouldReduceMotion ? {} : { scale: 1.01 }}
               >
-                <option>Existing Practice</option>
-                <option>New Practice Setup</option>
+                <option value="Existing Practice">Existing Practice</option>
+                <option value="New Practice Setup">New Practice Setup</option>
               </motion.select>
               <motion.button
-                type="button"
-                className="mt-2 rounded-full bg-accent py-3 font-semibold text-accent-foreground transition hover:bg-accent/90"
+                type="submit"
+                disabled={status === "loading"}
+                className="mt-2 rounded-full bg-accent py-3 font-semibold text-accent-foreground transition hover:bg-accent/90 disabled:opacity-50"
                 whileHover={getHoverLift(shouldReduceMotion, -4)}
                 whileTap={getTapPress(shouldReduceMotion)}
               >
-                Submit
+                {status === "loading" ? "Sending..." : "Submit"}
               </motion.button>
             </div>
           </motion.form>
