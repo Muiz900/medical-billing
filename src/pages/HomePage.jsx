@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import {
   ArrowRight,
@@ -106,27 +106,18 @@ const steps = [
   { number: "3", title: "Watch your practice grow", desc: "We handle the rest while you focus on patient care." },
 ];
 
-const triageItems = [
-  "I want to spend more time with patients",
-  "I'm not sure if we're compliant or I need help with compliance",
-  "I'm worried about security of data",
-  "My staff spends too much time on paperwork",
-  "I need to expand our network of insurance coverage",
-];
 
 const testimonials = [
   {
-    name: "Rusty Osbourne",
-    text: replaceSiteDetails(
-      "We at Pain Spine And Sports Medicine are so grateful that we have Midsouth Healthcare Management as our medical billing company. Extremely knowledgeable team that is very easy to work with.",
-    ),
+    name: "Derrick Jones",
+    text: "We are so grateful that we have CoverRCM as our medical billing company. Extremely knowledgeable team that is very easy to work with.",
   },
   {
-    name: "Kanwal Chaudry",
+    name: "O'Brain Ogwanihu",
     text: "An all encompassing service from start up to everything needed to make a medical practice successful. The team is absolutely wonderful. Peace of mind and customer service at its best.",
   },
   {
-    name: "Christopher Price Cunningham",
+    name: "Christopher Price",
     text: "Shawn and his team are extremely hard working. Dedicated to IT support always working to ensure customer satisfaction.",
   },
 ];
@@ -484,94 +475,117 @@ function HowItWorks() {
   );
 }
 
-function Triage() {
-  const [checked, setChecked] = useState(new Set());
-  const [showResults, setShowResults] = useState(false);
+function ROICalculator() {
   const shouldReduceMotion = useReducedMotion();
+  const [monthlyVolume, setMonthlyVolume] = useState("50000");
+  const [denialRate, setDenialRate] = useState("12");
+  const [cleanClaim, setCleanClaim] = useState("85");
 
-  function toggle(index) {
-    const next = new Set(checked);
+  const formatCurrency = (val) => {
+    if (!val) return "";
+    const numeric = val.replace(/[^0-9]/g, "");
+    return new Intl.NumberFormat("en-US").format(numeric);
+  };
 
-    if (next.has(index)) {
-      next.delete(index);
-    } else {
-      next.add(index);
-    }
+  const volumeNum = parseFloat(monthlyVolume.replace(/,/g, "")) || 0;
+  const denialNum = parseFloat(denialRate) || 0;
+  const cleanNum = parseFloat(cleanClaim) || 0;
 
-    setChecked(next);
-  }
+  const annualVolume = volumeNum * 12;
+  const recaptured = annualVolume * (denialNum / 100) * 0.5;
+  const adminSavings = annualVolume * ((100 - cleanNum) / 100) * 0.02;
+  const estimatedFee = annualVolume * 0.05;
+  const roiMultiplier = estimatedFee > 0 ? ((recaptured + adminSavings) / estimatedFee).toFixed(1) : "0.0";
+
+  const handleClaim = () => {
+    const msg = `Hi CoverRCM team,\n\nI just used the ROI Calculator on your website. Based on our metrics:\n- Monthly Volume: $${monthlyVolume}\n- Denial Rate: ${denialRate}%\n- Clean Claim Rate: ${cleanClaim}%\n\nWe could potentially recapture $${new Intl.NumberFormat("en-US").format(Math.round(recaptured))} annually. I'd like to schedule a Free Revenue Leak Check.`;
+    window.dispatchEvent(new CustomEvent("fillContactForm", { detail: { message: msg } }));
+    document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <section className="bg-secondary px-6 py-20 md:px-16">
       <Reveal direction="up">
-        <div className="mx-auto max-w-3xl rounded-3xl bg-card p-8 shadow-lg md:p-12">
-          <h2 className="text-3xl font-bold text-foreground md:text-4xl">Triage your business</h2>
+        <div className="mx-auto max-w-4xl rounded-3xl bg-card p-8 shadow-lg md:p-12">
+          <h2 className="text-3xl font-bold text-foreground md:text-4xl">Calculate Your Revenue Potential</h2>
           <p className="mt-3 text-muted-foreground">
-            Check off each that applies and see where you may need the most support.
+            Estimate your potential revenue recovery and administrative savings by entering your current billing metrics below.
           </p>
-          <div className="mt-8 space-y-3">
-            {triageItems.map((item, index) => (
-              <Reveal key={item} direction={index % 2 ? "right" : "left"} delay={index * 60}>
-                <motion.label
-                  className="flex cursor-pointer items-center gap-3 rounded-xl border border-border p-4 transition hover:border-primary hover:bg-secondary"
-                  whileHover={shouldReduceMotion ? {} : { x: 6 }}
-                >
-                  <input
-                    type="checkbox"
-                    checked={checked.has(index)}
-                    onChange={() => toggle(index)}
-                    className="sr-only"
-                  />
-                  <motion.span
-                    className={`flex h-6 w-6 items-center justify-center rounded-md border-2 ${
-                      checked.has(index) ? "border-primary bg-primary text-primary-foreground" : "border-border"
-                    }`}
-                    animate={checked.has(index) && !shouldReduceMotion ? { scale: [1, 1.12, 1] } : { scale: 1 }}
-                    transition={{ duration: 0.28 }}
-                  >
-                    {checked.has(index) ? <Check className="h-4 w-4" /> : null}
-                  </motion.span>
-                  <span className="text-foreground">{item}</span>
-                </motion.label>
-              </Reveal>
-            ))}
+
+          <div className="mt-10 grid gap-10 md:grid-cols-2">
+            <div className="space-y-6">
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-foreground">Monthly Billing Volume ($)</label>
+                <input
+                  type="text"
+                  value={monthlyVolume}
+                  onChange={(e) => setMonthlyVolume(formatCurrency(e.target.value))}
+                  className="w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  placeholder="e.g., 50,000"
+                />
+              </div>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-foreground">Current Denial Rate (%)</label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={denialRate}
+                  onChange={(e) => setDenialRate(e.target.value)}
+                  className="w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  placeholder="e.g., 12"
+                />
+              </div>
+              <div>
+                <label className="mb-2 block text-sm font-semibold text-foreground">Clean Claim Percentage (%)</label>
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  value={cleanClaim}
+                  onChange={(e) => setCleanClaim(e.target.value)}
+                  className="w-full rounded-xl border border-border bg-background px-4 py-3 text-foreground focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  placeholder="e.g., 85"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col justify-center space-y-6 rounded-2xl bg-primary/5 p-6 border border-primary/10">
+              <div>
+                <div className="text-sm font-medium text-muted-foreground">Annual Uncollected Revenue Recaptured</div>
+                <div className="mt-1 text-3xl font-bold text-primary">
+                  ${new Intl.NumberFormat("en-US").format(Math.round(recaptured))}
+                </div>
+              </div>
+              <div>
+                <div className="text-sm font-medium text-muted-foreground">Administrative Cost Savings</div>
+                <div className="mt-1 text-3xl font-bold text-primary">
+                  ${new Intl.NumberFormat("en-US").format(Math.round(adminSavings))}
+                </div>
+              </div>
+              <div className="border-t border-primary/10 pt-4">
+                <div className="text-sm font-medium text-muted-foreground">Net ROI Multiplier</div>
+                <div className="mt-1 text-4xl font-bold text-accent">
+                  {roiMultiplier}x
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground opacity-80">
+                *Estimated results based on industry averages and assumed CoverRCM recovery rates.
+              </p>
+            </div>
           </div>
-          <motion.button
-            type="button"
-            onClick={() => setShowResults(true)}
-            className="mt-8 w-full rounded-full bg-accent py-3 font-semibold text-accent-foreground transition hover:bg-accent/90"
-            whileHover={getHoverLift(shouldReduceMotion, -4)}
-            whileTap={getTapPress(shouldReduceMotion)}
-          >
-            Generate Results
-          </motion.button>
-          <AnimatePresence initial={false}>
-            {showResults && checked.size > 0 ? (
-              <motion.div
-                initial={shouldReduceMotion ? false : { opacity: 0, y: 18, height: 0 }}
-                animate={{ opacity: 1, y: 0, height: "auto" }}
-                exit={shouldReduceMotion ? {} : { opacity: 0, y: -12, height: 0 }}
-                transition={{ duration: 0.36, ease: premiumEase }}
-                className="mt-6 overflow-hidden rounded-2xl border border-primary/20 bg-primary/5 p-6"
-              >
-                <h3 className="font-semibold text-foreground">Recommended areas to explore</h3>
-                <ul className="mt-3 space-y-2">
-                  {Array.from(checked).map((index) => (
-                    <motion.li
-                      key={triageItems[index]}
-                      className="flex items-start gap-2 text-sm text-foreground"
-                      initial={shouldReduceMotion ? false : { opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.24, delay: index * 0.04 }}
-                    >
-                      <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                      {triageItems[index]}
-                    </motion.li>
-                  ))}
-                </ul>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
+
+          <div className="mt-10 text-center md:text-left">
+            <motion.button
+              type="button"
+              onClick={handleClaim}
+              className="w-full rounded-full bg-accent py-4 text-lg font-semibold text-accent-foreground shadow-lg transition hover:bg-accent/90 md:w-auto md:px-12"
+              whileHover={getHoverLift(shouldReduceMotion, -4)}
+              whileTap={getTapPress(shouldReduceMotion)}
+            >
+              Claim Your Revenue
+            </motion.button>
+          </div>
         </div>
       </Reveal>
     </section>
@@ -636,8 +650,18 @@ function ContactForm() {
     email: "",
     message: "",
     practiceType: "Existing Practice",
+    number_of_providers: "",
+    monthly_revenue: "",
   });
   const [status, setStatus] = useState("idle");
+
+  useEffect(() => {
+    const handleFill = (e) => {
+      setFormData((prev) => ({ ...prev, message: e.detail.message }));
+    };
+    window.addEventListener("fillContactForm", handleFill);
+    return () => window.removeEventListener("fillContactForm", handleFill);
+  }, []);
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -647,7 +671,7 @@ function ContactForm() {
     try {
       await sendContactForm(formData);
       setStatus("success");
-      setFormData({ name: "", clinicName: "", phone: "", email: "", message: "", practiceType: "Existing Practice" });
+      setFormData({ name: "", clinicName: "", phone: "", email: "", message: "", practiceType: "Existing Practice", number_of_providers: "", monthly_revenue: "" });
     } catch (error) {
       console.error(error);
       setStatus("error");
@@ -655,7 +679,7 @@ function ContactForm() {
   };
 
   return (
-    <section className="bg-primary px-6 py-20 text-primary-foreground md:px-16">
+    <section id="contact-form" className="bg-primary px-6 py-20 text-primary-foreground md:px-16">
       <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-2">
         <Reveal direction="left">
           <div>
@@ -782,6 +806,39 @@ function ContactForm() {
                 <option value="Existing Practice">Existing Practice</option>
                 <option value="New Practice Setup">New Practice Setup</option>
               </motion.select>
+              <motion.input
+                name="number_of_providers"
+                type="number"
+                min="0"
+                value={formData.number_of_providers}
+                onChange={handleChange}
+                placeholder="Number of Providers"
+                required
+                className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-primary"
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={sectionViewport}
+                transition={{ duration: 0.28, delay: 0.28 }}
+                whileFocus={shouldReduceMotion ? {} : { scale: 1.01 }}
+              />
+              <motion.select
+                name="monthly_revenue"
+                value={formData.monthly_revenue}
+                onChange={handleChange}
+                required
+                className="w-full rounded-lg border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-primary"
+                initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={sectionViewport}
+                transition={{ duration: 0.28, delay: 0.29 }}
+                whileFocus={shouldReduceMotion ? {} : { scale: 1.01 }}
+              >
+                <option value="" disabled>Select Monthly Revenue</option>
+                <option value="$0–$50K">$0–$50K</option>
+                <option value="$51K–$100K">$51K–$100K</option>
+                <option value="$101K–$150K">$101K–$150K</option>
+                <option value="$150K+">$150K+</option>
+              </motion.select>
               <motion.button
                 type="submit"
                 disabled={status === "loading"}
@@ -880,7 +937,7 @@ export default function HomePage() {
       <WhoWeServe />
       <Stats />
       <HowItWorks />
-      <Triage />
+      <ROICalculator />
       <Testimonials />
       <ContactForm />
       <FAQ />

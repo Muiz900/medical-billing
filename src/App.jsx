@@ -8,6 +8,7 @@ import SiteHeader from "@/components/SiteHeader";
 import { usePathname } from "@/lib/router";
 import { COMPANY_NAME, SITE_DESCRIPTION } from "@/lib/siteConfig";
 import HomePage from "@/pages/HomePage";
+import SpecialtyPage from "@/pages/SpecialtyPage";
 
 function getSlug(pathname) {
   const normalized = pathname.replace(/^\/+|\/+$/g, "");
@@ -86,7 +87,7 @@ export default function App() {
           <motion.div key={pathname} {...pageMotion}>
             <SiteHeader />
             <main>
-              <PageRenderer slug={slug} />
+              {slug === "specialty" ? <SpecialtyPage /> : <PageRenderer slug={slug} />}
             </main>
             <SiteFooter />
           </motion.div>

@@ -23,6 +23,7 @@ const nav = [
       { label: "Back Office Services", to: "/back-office-services" },
     ],
   },
+  { label: "Specialty", to: "/specialty" },
   { label: "Our Difference", to: "/our-difference" },
   { label: "Partners", to: "/partners" },
   { label: "Blog", to: "/blog" },

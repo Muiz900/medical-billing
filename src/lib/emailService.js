@@ -30,6 +30,8 @@ export async function sendContactForm(data) {
     from_email:    data.email,
     message:       data.message,
     practice_type: data.practiceType,
+    number_of_providers: data.number_of_providers,
+    monthly_revenue: data.monthly_revenue,
     // Sent to the address configured in your EmailJS service / template
     to_name:       "CoverRCM",
   };
