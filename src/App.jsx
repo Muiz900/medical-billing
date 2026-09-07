@@ -8,7 +8,21 @@ import SiteHeader from "@/components/SiteHeader";
 import { usePathname } from "@/lib/router";
 import { COMPANY_NAME, SITE_DESCRIPTION } from "@/lib/siteConfig";
 import HomePage from "@/pages/HomePage";
+import RevenueLeakCheckPage from "@/pages/RevenueLeakCheckPage";
 import SpecialtyPage from "@/pages/SpecialtyPage";
+
+const CUSTOM_PAGE_META = {
+  "revenue-leak-check": {
+    title: "Free Revenue Leak Check | CoverRCM",
+    description:
+      "Identify potential revenue-cycle leaks in your medical practice and schedule a free revenue review with CoverRCM.",
+  },
+  specialty: {
+    title: "Specialties We Serve | CoverRCM",
+    description:
+      "CoverRCM provides expert medical billing and RCM services for 17+ healthcare specialties.",
+  },
+};
 
 function getSlug(pathname) {
   const normalized = pathname.replace(/^\/+|\/+$/g, "");
@@ -52,6 +66,11 @@ export default function App() {
       return;
     }
 
+    if (CUSTOM_PAGE_META[slug]) {
+      setDocumentMetadata(CUSTOM_PAGE_META[slug]);
+      return;
+    }
+
     setDocumentMetadata(getResolvedPageMeta(slug));
   }, [isHomePage, slug]);
 
@@ -87,7 +106,11 @@ export default function App() {
           <motion.div key={pathname} {...pageMotion}>
             <SiteHeader />
             <main>
-              {slug === "specialty" ? <SpecialtyPage /> : <PageRenderer slug={slug} />}
+              {slug === "specialty"
+                ? <SpecialtyPage />
+                : slug === "revenue-leak-check"
+                ? <RevenueLeakCheckPage />
+                : <PageRenderer slug={slug} />}
             </main>
             <SiteFooter />
           </motion.div>

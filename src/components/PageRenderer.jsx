@@ -1114,15 +1114,14 @@ function PageRenderer({ slug }) {
               <span className="inline-flex rounded-full bg-card px-4 py-2 text-sm font-medium text-foreground shadow-sm">
                 {readingTime} min read
               </span>
-              <motion.a
-                href={CONTACT_PHONE_LINK}
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground"
-                whileHover={getHoverLift(shouldReduceMotion, -4)}
-                whileTap={getTapPress(shouldReduceMotion)}
-              >
-                <Phone className="h-4 w-4" />
-                Schedule a Call
-              </motion.a>
+              <motion.div whileHover={getHoverLift(shouldReduceMotion, -4)} whileTap={getTapPress(shouldReduceMotion)}>
+                <Link
+                  to="/revenue-leak-check"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground"
+                >
+                  Free Revenue Leak Check
+                </Link>
+              </motion.div>
               <motion.div whileHover={getHoverLift(shouldReduceMotion, -4)} whileTap={getTapPress(shouldReduceMotion)}>
                 <Link
                   to="/contact"

@@ -2,25 +2,24 @@ import emailjs from "@emailjs/browser";
 
 // ─────────────────────────────────────────────────────────────
 //  EmailJS Configuration
-//  1. Go to https://www.emailjs.com and create a free account
-//  2. Add an Email Service (Gmail, Outlook, etc.) → copy the Service ID
-//  3. Create an Email Template → copy the Template ID
-//  4. Go to Account → API Keys → copy your Public Key
-//  Then replace the three placeholders below with your real values.
+//  Shared service ID and public key across all forms.
+//  Each form uses its own template ID.
 // ─────────────────────────────────────────────────────────────
 
-const EMAILJS_SERVICE_ID  = "service_etsagns";   // e.g. "service_abc123"
-const EMAILJS_TEMPLATE_ID = "template_y4qhjkd";  // e.g. "template_xyz789"
-const EMAILJS_PUBLIC_KEY  = "1wIn2bORxzGqgtkq5";   // e.g. "aBcDeFgHiJkLmNoPq"
+const EMAILJS_SERVICE_ID  = "service_etsagns";
+const EMAILJS_PUBLIC_KEY  = "1wIn2bORxzGqgtkq5";
+
+// Template for "Get In Touch" contact form
+const EMAILJS_CONTACT_TEMPLATE_ID = "template_y4qhjkd";
+
+// Template for "Free Revenue Leak Check" diagnostic form
+// ACTION REQUIRED: Create a new template in EmailJS and paste its ID below.
+// Template variables needed: {{specialty}}, {{monthly_claims_volume}},
+// {{current_ar_days}}, {{denial_rate}}, {{credentialing_pain_points}}
+const EMAILJS_REVENUE_LEAK_TEMPLATE_ID = "template_4vzipzj"; // ← replace with your real template ID
 
 /**
- * Send the contact form data to the company inbox via EmailJS.
- *
- * The template variables used here must match the ones you set up
- * inside your EmailJS template (use {{from_name}}, {{clinic_name}}, etc.).
- *
- * @param {{ name: string, clinicName: string, phone: string, email: string, message: string, practiceType: string }} data
- * @returns {Promise<void>}
+ * Send the Get In Touch contact form data via EmailJS.
  */
 export async function sendContactForm(data) {
   const templateParams = {
@@ -32,13 +31,41 @@ export async function sendContactForm(data) {
     practice_type: data.practiceType,
     number_of_providers: data.number_of_providers,
     monthly_revenue: data.monthly_revenue,
-    // Sent to the address configured in your EmailJS service / template
     to_name:       "CoverRCM",
   };
 
   await emailjs.send(
     EMAILJS_SERVICE_ID,
-    EMAILJS_TEMPLATE_ID,
+    EMAILJS_CONTACT_TEMPLATE_ID,
+    templateParams,
+    EMAILJS_PUBLIC_KEY,
+  );
+}
+
+/**
+ * Send the Free Revenue Leak Check diagnostic data via EmailJS.
+ *
+ * @param {{
+ *   specialty: string,
+ *   monthly_claims_volume: string,
+ *   current_ar_days: string,
+ *   denial_rate: string,
+ *   credentialing_pain_points: string,
+ * }} data
+ */
+export async function sendRevenueLeak(data) {
+  const templateParams = {
+    specialty:                  data.specialty,
+    monthly_claims_volume:      data.monthly_claims_volume,
+    current_ar_days:            data.current_ar_days,
+    denial_rate:                data.denial_rate,
+    credentialing_pain_points:  data.credentialing_pain_points,
+    to_name:                    "CoverRCM",
+  };
+
+  await emailjs.send(
+    EMAILJS_SERVICE_ID,
+    EMAILJS_REVENUE_LEAK_TEMPLATE_ID,
     templateParams,
     EMAILJS_PUBLIC_KEY,
   );

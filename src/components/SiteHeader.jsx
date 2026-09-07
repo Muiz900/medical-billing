@@ -134,15 +134,18 @@ function SiteHeader() {
             ))}
           </nav>
 
-          <motion.a
-            href={CONTACT_PHONE_LINK}
-            className="hidden items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 md:inline-flex"
+          <motion.div
             whileHover={shouldReduceMotion ? {} : { y: -2, scale: 1.02 }}
             whileTap={shouldReduceMotion ? {} : { scale: 0.98 }}
+            className="hidden md:inline-flex"
           >
-            <Phone className="h-4 w-4" />
-            Schedule a Call
-          </motion.a>
+            <Link
+              to="/revenue-leak-check"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+            >
+              Free Revenue Leak Check
+            </Link>
+          </motion.div>
 
           <motion.button
             type="button"
@@ -186,12 +189,13 @@ function SiteHeader() {
                 ) : null}
               </div>
             ))}
-            <a
-              href={CONTACT_PHONE_LINK}
+            <Link
+              to="/revenue-leak-check"
+              onClick={() => setOpen(false)}
               className="mt-3 block w-full rounded-full bg-primary px-4 py-2 text-center text-sm font-medium text-primary-foreground"
             >
-              Schedule a Call
-            </a>
+              Free Revenue Leak Check
+            </Link>
           </div>
         </motion.div>
       ) : null}

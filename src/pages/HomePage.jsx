@@ -246,16 +246,13 @@ function Hero() {
           <p className="max-w-xs text-base text-primary-foreground/90 md:text-right">
             Let us do the work while you focus on growth and patient care.
           </p>
-          <motion.a
-            href={CONTACT_PHONE_LINK}
+          <Link
+            to="/revenue-leak-check"
             className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-sm font-semibold text-accent-foreground shadow-lg"
-            whileHover={getHoverLift(shouldReduceMotion, -4)}
-            whileTap={getTapPress(shouldReduceMotion)}
           >
-            <Phone className="h-4 w-4" />
-            Schedule a Call
+            Free Revenue Leak Check
             <ArrowRight className="h-4 w-4" />
-          </motion.a>
+          </Link>
         </motion.div>
       </motion.div>
     </section>
