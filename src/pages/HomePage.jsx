@@ -98,6 +98,8 @@ const stats = [
   { value: 96, suffix: "%", label: "of clients are growing" },
   { value: 8, suffix: "/10", label: "report happier staff" },
   { value: 2, suffix: "x", label: "growth in just one year" },
+  { value: 98, suffix: "%", label: "first pass clean claim rate" },
+  { value: 1.2, suffix: "%", label: "denial rate", decimals: 1 },
 ];
 
 const steps = [
@@ -415,7 +417,7 @@ function Stats() {
       >
         Our data speaks volumes
       </motion.h2>
-      <div className="mx-auto mt-12 grid max-w-5xl gap-8 md:grid-cols-3">
+      <div className="mx-auto mt-12 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-5">
         {stats.map((stat, index) => (
           <motion.div
             key={stat.label}
@@ -424,7 +426,7 @@ function Stats() {
             whileHover={getHoverLift(shouldReduceMotion, -8)}
           >
             <div className="text-6xl font-bold text-accent md:text-7xl">
-              <CountUp value={stat.value} suffix={stat.suffix} className="tabular-nums" />
+              <CountUp value={stat.value} suffix={stat.suffix} decimals={stat.decimals ?? 0} className="tabular-nums" />
             </div>
             <div className="mt-2 text-base text-primary-foreground/80">{stat.label}</div>
           </motion.div>

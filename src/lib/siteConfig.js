@@ -6,7 +6,7 @@ const DEFAULT_SITE_DESCRIPTION =
   "Revenue cycle management and healthcare consulting services.";
 
 export const COMPANY_NAME = import.meta.env.VITE_COMPANY_NAME || DEFAULT_COMPANY_NAME;
-export const CONTACT_NAME = import.meta.env.VITE_CONTACT_NAME || COMPANY_NAME;
+export const CONTACT_NAME = import.meta.env.VITE_CONTACT_NAME || "Shawn Hawk";
 export const CONTACT_EMAIL = import.meta.env.VITE_CONTACT_EMAIL || DEFAULT_CONTACT_EMAIL;
 export const CONTACT_PHONE = import.meta.env.VITE_CONTACT_PHONE || DEFAULT_CONTACT_PHONE;
 export const CONTACT_WEBSITE = import.meta.env.VITE_CONTACT_WEBSITE || "";
