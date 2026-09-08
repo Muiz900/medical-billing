@@ -65,11 +65,8 @@ export default function LiveChat() {
           whileTap={{ scale: 0.95 }}
           aria-label="Open live chat"
         >
-          <div className="max-w-0 overflow-hidden whitespace-nowrap text-sm font-semibold tracking-wide transition-all duration-300 ease-in-out group-hover:max-w-xs group-hover:pr-2">
-            Need Help?
-          </div>
           <motion.span
-            className="text-2xl leading-none"
+            className="mr-2 text-2xl leading-none"
             animate={{ rotate: [0, 20, -10, 20, -10, 0] }}
             transition={{
               duration: 1.5,
@@ -78,8 +75,9 @@ export default function LiveChat() {
               ease: "easeInOut",
             }}
           >
-            ??
+            👋
           </motion.span>
+          <span className="text-sm font-semibold tracking-wide">Let's Talk</span>
         </motion.button>
       )}
     </AnimatePresence>
