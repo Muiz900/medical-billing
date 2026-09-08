@@ -111,11 +111,11 @@ const steps = [
 
 const testimonials = [
   {
-    name: "Derrick Jones",
+    name: "Derrick Mitchell",
     text: "We are so grateful that we have CoverRCM as our medical billing company. Extremely knowledgeable team that is very easy to work with.",
   },
   {
-    name: "O'Brain Ogwanihu",
+    name: "O'Brian Wallace",
     text: "An all encompassing service from start up to everything needed to make a medical practice successful. The team is absolutely wonderful. Peace of mind and customer service at its best.",
   },
   {
