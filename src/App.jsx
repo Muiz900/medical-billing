@@ -10,6 +10,7 @@ import { COMPANY_NAME, SITE_DESCRIPTION } from "@/lib/siteConfig";
 import HomePage from "@/pages/HomePage";
 import RevenueLeakCheckPage from "@/pages/RevenueLeakCheckPage";
 import SpecialtyPage from "@/pages/SpecialtyPage";
+import LiveChat from "@/components/LiveChat";
 
 const CUSTOM_PAGE_META = {
   "revenue-leak-check": {
@@ -116,6 +117,7 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
+      <LiveChat />
     </div>
   );
 }
