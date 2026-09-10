@@ -23,9 +23,6 @@ function SiteFooter() {
           <p className="mt-3 text-sm opacity-80">
             Helping practices grow with practice management, RCM, IT, virtual care, and back-office support.
           </p>
-          {CONTACT_NAME && CONTACT_NAME !== COMPANY_NAME ? (
-            <p className="mt-4 text-sm opacity-80">Primary contact: {CONTACT_NAME}</p>
-          ) : null}
           <div className="mt-4 flex flex-wrap gap-3 text-sm opacity-80">
             {CONTACT_WEBSITE ? (
               <a href={CONTACT_WEBSITE} target="_blank" rel="noreferrer">
